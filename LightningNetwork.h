@@ -72,7 +72,7 @@ public:
 
 	bool hasEnoughFunds(ln_units amount, int source, int  paymentMethod);
 
-	void makePayments(std::vector<std::vector<ln_units>> );
+	void makePayments(std::vector<std::vector<ln_units>> ,int updatedTime);
 	int processStoredPayments(int time);
 	void addPaymentChannel(PaymentChannel * pc, int idA, int idB);
 	PaymentChannel * getChannel(int idA, int idB);

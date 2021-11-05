@@ -542,8 +542,8 @@ int main(int argc, char * * argv){
             
 					std::cout << "Success!\n";
 					totalFee+=fee;
-					net->makePayments(flows);
-					int failedPayments = net->processStoredPayments(currentTime);
+					net->makePayments(flows,int(time/1));
+					int failedPayments = net->processStoredPayments(time/1);
 					stats.successes-=failedPayments;
 					stats.fails+=failedPayments;
 					int pathLength = stats.calcPathLength(flows);
@@ -567,7 +567,7 @@ int main(int argc, char * * argv){
         delete pd;
 
 nextpay:
-                currentTime += 5;
+                currentTime = time/2;
 		double acceptRatio = ((double)stats.successes) / stats.numPayments;
 
 		std::cerr << "Success ratio: " << acceptRatio << "\n";

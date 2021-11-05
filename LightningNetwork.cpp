@@ -163,6 +163,11 @@ int LightningNetwork::processStoredPayments(int time) {
 		storedPayment temp = storedPayments.top();
 		if(temp.timestamp>time)
 			break;
+		if(paymentState[temp.id]==1)
+		{
+			storedPayments.pop();
+			continue;
+		}
 		PaymentChannel * ch = getChannel(temp.from,temp.to);
 		if(temp.from<temp.to)
 		{
@@ -195,7 +200,7 @@ int LightningNetwork::processStoredPayments(int time) {
 	return fail;
 }
 
-void LightningNetwork::makePayments(std::vector<std::vector<ln_units> > payments) {
+void LightningNetwork::makePayments(std::vector<std::vector<ln_units> > payments,int updatedTime) {
 	int candidateFrom[10000];
 	int candidateTo[10000];
 	int vis[10000];
@@ -248,7 +253,7 @@ void LightningNetwork::makePayments(std::vector<std::vector<ln_units> > payments
 
 
 	}
-	int initialtime = currentTimestamp;
+	int initialtime = updatedTime;
 	while(1)
 	{
 		int start = s;
@@ -270,7 +275,7 @@ void LightningNetwork::makePayments(std::vector<std::vector<ln_units> > payments
 				temp.id = cntStored;
 	                        temp.amount = payments[candidateFrom[i]][candidateTo[i]];
 				cout<<"haha: "<<candidateFrom[i]<<" "<<candidateTo[i]<<endl;
-	                        simulatetime+=2;
+	                        simulatetime+=(2+rand()%10);
 	                        temp.timestamp = simulatetime;
 				currentTimestamp = max(currentTimestamp,simulatetime);
 	                        storedPayments.push(temp);
